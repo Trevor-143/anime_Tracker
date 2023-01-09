@@ -60,7 +60,7 @@ onMounted (() => {
 
 <template>
   <main>
-    <h1>My Anime</h1>
+    <h1>Anime Watch Tracker</h1>
     <form @submit.prevent="searchAnime">
       <input 
         type="text" 
@@ -68,7 +68,7 @@ onMounted (() => {
         v-model="query" 
         @input="handleInput"
       >
-      <button type="submit"> search </button>
+      <button type="submit" class="button"> search </button>
     </form>
     <div class="results" v-if="search_results.length > 0">
       <div class="result" v-for="anime in search_results">
@@ -79,7 +79,7 @@ onMounted (() => {
             {{ anime.synopsis.slice(0,120) }}....
           </p>
           <span class="flex-1"></span>
-          <button @click="addAnime(anime)">Add Anime</button>
+          <button class="button" @click="addAnime(anime)">Add Anime</button>
         </div>
       </div>
     </div>
@@ -92,14 +92,150 @@ onMounted (() => {
           <span class="episodes">
             {{ anime.watched_episodes }} / {{ anime.total_episodes }}
           </span>
+          <div class="anibtn">
+            <button class="button" v-if="anime.total_episodes !== anime.watched_episodes" @click="increaseWatch(anime)">+</button>
+            <button class="button" v-if="anime.watched_episodes > 0" @click="decreaseWatch(anime)">-</button>
+          </div>
         </div>
       </div>
     </div>
   </main>
 </template>
 
-<style scoped>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fira sans', 'sans-serif';
+}
+body {
+  background: #eee;
+  
+}
+main {
+  margin: 0 auto;
+  max-width: 768px;
+  padding: 1.5rem;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+form {
+  display: flex;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+}
+form input {
+  appearance: none;
+  outline: none;
+  border: none;
+  background: #fff;
+  display: flex;
+  color: #888;
+  font-size: 1.125rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+.button {
+  appearance: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: block;
+  padding: 0.5rem 1rem;
+  background-image: linear-gradient(to right, deeppink 50%, darkviolet 50%);
+  background-size: 200%;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: 0.4s;
+}
+.button:hover {
+  background-position: right ;
+}
+.results {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0 0 0 0.1);
+  max-height: 480px;
+  overflow-y: scroll;
+  margin-bottom: 1.5rem;
+}
+.result {
+  display: flex;
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  transition: 0.4s;
+}
+.results img {
+  width: 100px;
+  border-radius: 1rem;
+  margin-right: 1rem;
+}
+.details {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.flex-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 70px;
+  width: 100%;
+}
+.details h3 {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+.details .button {
+  margin-left: auto;
+}
+.myanime h2 {
+  color: #888;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+.myanime .anime {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0px 2px 4px rgba(0 0 0 0.1);
 
+}
+.episodes {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.anime img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 1rem;
+  margin-right: 1rem;
+}
+.anime h3 {
+  color: #888;
+  font-size: 1.125rem;
+}
+.anime .button:first-of-type {
+  margin-right: 1rem;
+}
+.anime .button:last-of-type {
+  margin-right: 0;
+}
 
 
 </style>
